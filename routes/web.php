@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PokemonController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +22,10 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('posts', App\Http\Controllers\PostController::class);
 });
+
+Route::get('/profile', [UserController::class,'index']);
+
+Route::put('/profile/{username}',[UserController::class,'profileUpdate']);
 
 Auth::routes();
 

@@ -34,4 +34,19 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 50px">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Profile') }}</div>
+                <div class="card-body">
+                    <div>
+                        <a href="profile">Go to your profile!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

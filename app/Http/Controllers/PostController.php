@@ -12,9 +12,19 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::latest()->paginate(5);
+        $posts = Post::where([
+            ['name', '!=', Null],
+            [function ($query) use ($request) {
+                if (($term = $request->term)) {
+                    $query->orWhere('name', 'LIKE', '%' . $term . '%')->get();
+                }
+            }]
+        ])
+            ->orderBy('created_at')
+            ->paginate(5);
+
         return view('posts.index',compact('posts'))
 
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -126,10 +136,10 @@ class PostController extends Controller
     {
         $this->authorize('posts_status');
 
-        $pokemon = Pokemon::findOrFail($request->pokemon_id);
-        $pokemon->status = $request->status;
-        $pokemon->save();
+        $post = Post::findOrFail($request->post_id);
+        $post->status = $request->status;
+        $post->save();
 
-        return response()->json(['Status changed successfully!']);
+        return response()->json(['Status changed ok']);
     }
 }
