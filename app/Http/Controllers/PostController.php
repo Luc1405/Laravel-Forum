@@ -27,6 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('posts_create');
         return view('posts.create');
     }
 
@@ -38,6 +39,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('posts_create');
+
         $request->validate([
             'name' => 'required',
             'image' => 'required',
@@ -74,6 +77,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $this->authorize('posts_edit');
         return view('posts.edit',compact('post'));
     }
 
@@ -86,6 +90,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $this->authorize('posts_edit');
         $post = Pokemon::find($post->id);
         if (!$request->input('name') == ""){
             $post->name = $request->input('name');
@@ -110,9 +115,21 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('posts_delete');
         $post->delete();
         return redirect()->route('posts.index')
 
             ->with('success','Post deleted!');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $this->authorize('posts_status');
+
+        $pokemon = Pokemon::findOrFail($request->pokemon_id);
+        $pokemon->status = $request->status;
+        $pokemon->save();
+
+        return response()->json(['Status changed successfully!']);
     }
 }

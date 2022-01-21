@@ -44,7 +44,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Caption:</strong>
-                    <input type="text" name="type" class="form-control" placeholder="Type">
+                    <input type="text" name="caption" class="form-control" placeholder="Caption">
                 </div>
             </div>
 

@@ -20,4 +20,18 @@
         </div>
     </div>
 </div>
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 50px">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Posts') }}</div>
+                <div class="card-body">
+                    <div>
+                        <a href="posts">Go to posts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
