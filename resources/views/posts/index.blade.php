@@ -15,12 +15,12 @@
         <div class="col-lg-12 margin-tb">
 
             <div class="pull-left">
-                <h2>It's posting time</h2>
+                <h2>test</h2>
             </div>
 
             <div class="pull-right">
                 @can('posts_create')
-                    <a class="btn btn-success" href="{{ route('posts.create') }}"> Add new Pokemon</a>
+                    <a class="btn btn-success" href="{{ route('posts.create') }}">Post something</a>
                 @endcan
             </div>
 
@@ -29,15 +29,27 @@
                     <div class="">
                         <form action="{{ route('posts.index') }}" method="GET" role="search">
                             <div class="input-group">
-                            <span class="input-group-btn">
                                 <button class="btn btn-info" type="submit">Search</button>
-                                        <span class="fas fa-search"></span>
-                            </span>
-                                <input type="text" class="form-control mr-2" name="term" placeholder="Name or Type" id="term">
+                                <input type="text" class="form-control mr-2" name="search" placeholder="Name" id="search">
                                 <a href="{{ route('posts.index') }}" class="mt-1"></a>
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="">
+                <form action="{{ route('posts.index') }}" method="GET">
+                    <div class="input-group">
+                        <button class="btn btn-info" type="submit">Filter</button>
+                        <select name="filter" id="filter" data-dependent="state">
+                            <option value="tags" disabled selected>Tags</option>
+                            <option value="Music">Music</option>
+                            <option value="Games">Games</option>
+                        </select>
+                    </div>
+                </form>
                 </div>
             </div>
 
@@ -56,8 +68,9 @@
             <th>Name</th>
             <th>Image</th>
             <th>Caption</th>
-            <th>Caught</th>
+            <th>Likes</th>
             <th>Show</th>
+            <th>Tags</th>
         </tr>
         @foreach ($posts as $post)
             @if($post->status == 1)
@@ -92,6 +105,7 @@
                            class="js-switch" {{ $post->status == 1 ? 'checked' : '' }}>
                 </td>
                 @endcan
+                <td>{{ $post->tags }}</td>
                 <td>
                     <form action="{{ route('posts.destroy',$post) }}" method="POST">
 
@@ -107,8 +121,10 @@
                     </form>
 
                 </td>
+
             </tr>
-@endif  @endforeach
+        @endif
+        @endforeach
     </table>
 
 @endsection

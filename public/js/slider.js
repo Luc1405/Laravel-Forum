@@ -1,7 +1,7 @@
 $(function( $ ){
     $('.js-switch').change(function () {
         let status = $(this).prop('checked') === true ? 1 : 0;
-        let pokemonId = $(this).data('id');
+        let postId = $(this).data('id');
 
         $.ajaxSetup({
             headers: {
@@ -13,7 +13,7 @@ $(function( $ ){
             type: "POST",
             dataType: "json",
             url: "/update-status",
-            data: {'status': status, 'pokemon_id': pokemonId},
+            data: {'status': status, 'post_id': postId},
             success: function (data) {
             }
         });

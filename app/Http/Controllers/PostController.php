@@ -15,16 +15,22 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::where([
-            ['name', '!=', Null],
-            [function ($query) use ($request) {
-                if (($term = $request->term)) {
-                    $query->orWhere('name', 'LIKE', '%' . $term . '%')->get();
-                }
-            }]
-        ])
-            ->orderBy('created_at')
-            ->paginate(5);
+        if(request('search')){
+            $search = request('search');
+            $posts = Post::where ('name', 'LIKE', '%' . $search . '%')
+                ->get();
+        }
+
+        elseif(request('filter')){
+            $filter = request('filter');
+            $posts = Post::where ('tags', 'LIKE', '%' .  $filter . '%')
+                ->get();
+        }
+
+        else{
+            $posts = Post::all();
+        }
+
 
         return view('posts.index',compact('posts'))
 
@@ -56,6 +62,7 @@ class PostController extends Controller
             'name' => 'required',
             'image' => 'required',
             'caption' => 'required',
+            'tags' => 'required',
         ]);
 
         $post = new Post;
@@ -63,6 +70,7 @@ class PostController extends Controller
         $post->image = $request->file('image')->storePublicly('images', 'public');
         $post->image = str_replace('images/', '', $post->image);
         $post->caption = $request->input('caption');
+        $post->tags = $request->input('tags');
 
         $post->save();
 
@@ -102,7 +110,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $this->authorize('posts_edit');
-        $post = Pokemon::find($post->id);
+        $post = Post::find($post->id);
         if (!$request->input('name') == ""){
             $post->name = $request->input('name');
         }
