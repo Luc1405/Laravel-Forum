@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -131,6 +132,24 @@ class PostController extends Controller
 
             ->with('success','Post deleted!');
     }
+
+    public function liked(Request $request, Post $post){
+        $user = User::find(auth()->id());
+        $post = Post::find($request->input('id'));
+        $post->save();
+        $post->user()->attach($user);
+        return redirect()->back()->with('status', 'Post has been liked');
+    }
+
+    public function unliked(Request $request, Post $post){
+        $user = User::find(auth()->id());
+        $post = Post::find($request->input('id'));
+        $post->save();
+        $post->user()->detach($user);
+        return redirect()->back()->with('status', 'Post unliked');
+    }
+
+
 
     public function updateStatus(Request $request)
     {

@@ -11,6 +11,12 @@ class UserController extends Controller
 {
     public function index(){
 
+        $liked = Auth::user()->post;
+        if (count($liked) < 2){
+            return back()->with('status', 'Like two posts in order to update profile');
+        }
+
+
         if(Auth::user()){
             $users = User::find(1);
             return view('users.profile',['users' => $users]);
@@ -21,14 +27,20 @@ class UserController extends Controller
 
     public function profileUpdate(Request $request){
 
-        $request->validate([
-            'name' =>'required|min:4|string|max:255',
-            'email'=>'required|email|string|max:255'
-        ]);
-        $user =Auth::user();
-        $user->name = $request['name'];
-        $user->email = $request['email'];
-        $user->save();
-        return back()->with('status','Profile Updated');
+        $user = Auth::user();
+        $liked = Auth::user()->posts;
+
+        if(count($liked) >= 2){
+            $request->validate([
+                'name' =>'required',
+                'email'=>'required',
+            ]);
+            $user =Auth::user();
+            $user->name = $request['name'];
+            $user->email = $request['email'];
+            $user->save();
+            return back()->with('status','Profile Updated');
+        }
+        return back()->with('status', "To update profile, like two posts");
     }
 }

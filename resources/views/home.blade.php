@@ -42,7 +42,9 @@
                 <div class="card-header">{{ __('Profile') }}</div>
                 <div class="card-body">
                     <div>
-                        <a href="profile">Go to your profile!</a>
+                        <a href="{{ url('profile') }}">
+                            <p>Go to your profile!</p>
+                        </a>
                     </div>
                 </div>
             </div>

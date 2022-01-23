@@ -30,5 +30,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('posts_edit', function (User $user) { return $user->is_admin; } );
         Gate::define('posts_delete', function (User $user) { return $user->is_admin; } );
         Gate::define('posts_status', function (User $user) {return $user->is_admin; } );
+        Gate::define('posts_status', function (User $user) {return $user->is_admin; } );
     }
 }

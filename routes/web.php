@@ -23,9 +23,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('posts', App\Http\Controllers\PostController::class);
 });
 
+Route::post('/update-status', [App\Http\Controllers\PostController::class, 'updateStatus']);
+
 Route::get('/profile', [UserController::class,'index']);
 
 Route::put('/profile/{username}',[UserController::class,'profileUpdate']);
+
+Route::post('/posts/liked',[App\Http\Controllers\PostController::class, 'liked'])->name('liked');
+Route::post('/posts/unliked',[App\Http\Controllers\PostController::class, 'unliked'])->name('unliked');
+
 
 Auth::routes();
 

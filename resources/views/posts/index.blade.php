@@ -56,20 +56,44 @@
             <th>Name</th>
             <th>Image</th>
             <th>Caption</th>
+            <th>Caught</th>
+            <th>Show</th>
         </tr>
         @foreach ($posts as $post)
+            @if($post->status == 1)
             <tr>
                 <td>{{ $post->name }}</td>
                 <td><img src="{{ asset("storage/images/".$post['image']) }}" alt="{{ $post->name }}" height="250px" width="250px"></td>
                 <td>{{ $post->caption }}</td>
                 <td>
+                    <div>
+                        @if($post->user()->find(Auth::id()))
+                            <form action="{{ route('unliked', $post)  }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div>
+                                    <div>
+                                        <input type="id" id="id" name="id" value="{{$post->id}}" hidden>
+                                        <button type="submit" class="btn btn-outline-warning">Liked</button>
+                                    </div>
+                                </div>
+                            </form>
+                        @elseif($post->user()->find(Auth::id()) === null)
+                            <form action="{{ route('liked', $post)  }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <input type="id" id="id" name="id" value="{{$post->id}}" hidden>
+                                <button type="submit" class="btn btn-outline-success">Not Liked</button>
+                            </form>
+                        @endif
+                    </div>
+                </td>
+                @can('posts_status')
+                <td>
                     <input type="checkbox" data-id="{{ $post->id }}" name="status"
                            class="js-switch" {{ $post->status == 1 ? 'checked' : '' }}>
                 </td>
+                @endcan
                 <td>
                     <form action="{{ route('posts.destroy',$post) }}" method="POST">
-
-                        <a class="btn btn-info" href="{{ route('posts.show', $post) }}">Show</a>
 
                         @can('posts_edit')
                             <a class="btn btn-primary" href="{{ route('posts.edit',$post) }}">Edit</a>
@@ -84,7 +108,7 @@
 
                 </td>
             </tr>
-        @endforeach
+@endif  @endforeach
     </table>
 
 @endsection
