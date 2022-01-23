@@ -13,7 +13,7 @@ class UserController extends Controller
 
         $liked = Auth::user()->post;
         if (count($liked) < 2){
-            return back()->with('status', 'Like two posts in order to update profile');
+            return back()->with('status', 'Like two posts to edit profile');
         }
 
 
@@ -41,6 +41,6 @@ class UserController extends Controller
             $user->save();
             return back()->with('status','Profile Updated');
         }
-        return back()->with('status', "To update profile, like two posts");
+        return back()->with('status', "Like two posts to edit profile");
     }
 }
